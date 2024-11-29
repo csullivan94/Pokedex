@@ -8,6 +8,8 @@ import (
 
 func main() {
 
+	cfg := &Config{}
+
 	scanner := bufio.NewScanner(os.Stdin)
 	var input string
 	for {
@@ -15,18 +17,13 @@ func main() {
 		scanner.Scan()
 		input = scanner.Text()
 
-		switch input {
-		case "help":
-			commandHelp()
-		case "exit":
-			commandExit()
-		case "map":
-			commandMap()
-		case "mapb":
-			commandMapb()
-		default:
+		command, exists := getCommands()[input]
+		if !exists {
 			fmt.Println("unknown command")
+		} else {
+			command.callback(cfg)
 		}
 
 	}
+
 }
