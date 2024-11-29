@@ -19,8 +19,11 @@ func main() {
 		case "help":
 			commandHelp()
 		case "exit":
-			fmt.Println("exiting the Pokedex...")
-			os.Exit(0)
+			commandExit()
+		case "map":
+			commandMap()
+		case "mapb":
+			commandMapb()
 		default:
 			fmt.Println("unknown command")
 		}
