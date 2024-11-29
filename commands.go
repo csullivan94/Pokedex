@@ -1,10 +1,5 @@
 package main
 
-import (
-	"fmt"
-	"os"
-)
-
 type cliCommand struct {
 	name        string
 	description string
@@ -35,20 +30,4 @@ func getCommands() map[string]cliCommand {
 		},
 	}
 
-}
-
-func commandHelp(cfg *Config) error {
-	fmt.Println("----------Welcome to the Pokedex----------")
-	for _, commandStruct := range getCommands() {
-		fmt.Println("Command: ", commandStruct.name)
-		fmt.Println(commandStruct.description)
-		fmt.Println("------------------------------")
-	}
-	return nil
-}
-
-func commandExit(cfg *Config) error {
-	fmt.Println("exiting the Pokedex...")
-	os.Exit(0)
-	return nil
 }
