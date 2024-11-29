@@ -8,8 +8,6 @@ import (
 
 func main() {
 
-	commands.initCommands()
-
 	scanner := bufio.NewScanner(os.Stdin)
 	var input string
 	for {
@@ -19,10 +17,9 @@ func main() {
 
 		switch input {
 		case "help":
-
 			commandHelp()
 		case "exit":
-			fmt.Println(commands[input].description)
+			fmt.Println("exiting the Pokedex...")
 			os.Exit(0)
 		default:
 			fmt.Println("unknown command")
