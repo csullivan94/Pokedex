@@ -1,25 +1,33 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
+
+	"github.com/csullivan94/pokedex/internal/pokeapi"
 )
 
 func commandMap(cfg *Config) error {
+	if cfg.Next == "" {
+		cfg.Next = "https://pokeapi.co/api/v2/location"
+	}
+	cfg.PageNum += 1
 
-	for item := range getLocations().Results {
-		fmt.Println(getLocations().Results[item].Name)
+	locationstruct, err := pokeapi.GetLocations(cfg.Next)
+	if err != nil {
+		return err
+	}
+
+	for item := range locationstruct.Results {
+		fmt.Println(locationstruct.Results[item].Name)
 
 	}
 	fmt.Printf("---------------Page %d---------------\n", cfg.PageNum)
-	cfg.Next = locations.Next
+	cfg.Next = locationstruct.Next
 	if cfg.Next == "" {
 		fmt.Println("End of locations")
 		cfg.PageNum = 0
 	}
-	cfg.Previous = locations.Previous
+	cfg.Previous = locationstruct.Previous
 
 	return nil
 }
@@ -33,33 +41,18 @@ func commandMapb(cfg *Config) error {
 
 	cfg.PageNum -= 1
 
-	res, err := http.Get(cfg.Previous)
-	if err != nil {
-		fmt.Println("error with get request")
-		return err
-	}
-
-	data, err := io.ReadAll(res.Body)
+	locationstruct, err := pokeapi.GetLocations(cfg.Previous)
 	if err != nil {
 		return err
 	}
 
-	defer res.Body.Close()
-
-	var locations Location
-	err = json.Unmarshal(data, &locations)
-	if err != nil {
-		fmt.Printf("error unmarshaling data: %v ", err)
-		return err
-	}
-
-	for item := range locations.Results {
-		fmt.Println(locations.Results[item].Name)
+	for item := range locationstruct.Results {
+		fmt.Println(locationstruct.Results[item].Name)
 
 	}
 	fmt.Printf("---------------Page %d---------------\n", cfg.PageNum)
-	cfg.Next = locations.Next
-	cfg.Previous = locations.Previous
+	cfg.Next = locationstruct.Next
+	cfg.Previous = locationstruct.Previous
 
 	return nil
 }

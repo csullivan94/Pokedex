@@ -1,21 +1,23 @@
 package pokeapi
 
-func getLocations() {
-	if cfg.Next == "" {
-		cfg.Next = "https://pokeapi.co/api/v2/location"
-	}
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+)
 
-	cfg.PageNum += 1
+func GetLocations(url string) (Location, error) {
 
-	res, err := http.Get(cfg.Next)
+	res, err := http.Get(url)
 	if err != nil {
 		fmt.Println("error with get request: ", err)
-		return err
+		return Location{}, err
 	}
 
 	data, err := io.ReadAll(res.Body)
 	if err != nil {
-		return err
+		return Location{}, err
 	}
 
 	defer res.Body.Close()
@@ -24,7 +26,8 @@ func getLocations() {
 	err = json.Unmarshal(data, &locations)
 	if err != nil {
 		fmt.Printf("error unmarshaling data: %v ", err)
-		return err
+		return Location{}, err
 	}
+	return locations, nil
 
 }
