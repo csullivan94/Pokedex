@@ -9,6 +9,7 @@ import (
 func main() {
 
 	cfg := &Config{}
+	NewCache()
 
 	scanner := bufio.NewScanner(os.Stdin)
 	var input string
