@@ -4,15 +4,16 @@ import (
 	"fmt"
 
 	"github.com/csullivan94/pokedex/internal/pokeapi"
+	"github.com/csullivan94/pokedex/internal/pokecache"
 )
 
-func commandMap(cfg *Config) error {
+func commandMap(cfg *Config, cache *pokecache.Cache) error {
 	if cfg.Next == "" {
 		cfg.Next = "https://pokeapi.co/api/v2/location"
 	}
 	cfg.PageNum += 1
 
-	locationstruct, err := pokeapi.GetLocations(cfg.Next)
+	locationstruct, err := pokeapi.GetLocations(cfg.Next, cache)
 	if err != nil {
 		return err
 	}
@@ -32,7 +33,7 @@ func commandMap(cfg *Config) error {
 	return nil
 }
 
-func commandMapb(cfg *Config) error {
+func commandMapb(cfg *Config, cache *pokecache.Cache) error {
 
 	if cfg.Previous == "" {
 		fmt.Println("No previous pages")
@@ -41,7 +42,7 @@ func commandMapb(cfg *Config) error {
 
 	cfg.PageNum -= 1
 
-	locationstruct, err := pokeapi.GetLocations(cfg.Previous)
+	locationstruct, err := pokeapi.GetLocations(cfg.Previous, cache)
 	if err != nil {
 		return err
 	}

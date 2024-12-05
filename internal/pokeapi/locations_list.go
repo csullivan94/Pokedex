@@ -5,9 +5,22 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/csullivan94/pokedex/internal/pokecache"
 )
 
-func GetLocations(url string) (Location, error) {
+func GetLocations(url string, cache *pokecache.Cache) (Location, error) {
+
+	value, exists := cache.Get(url)
+	if exists {
+		var locations Location
+		err := json.Unmarshal(value, &locations)
+		if err != nil {
+			fmt.Printf("error unmarshaling data: %v ", err)
+			return Location{}, err
+		}
+		return locations, nil
+	}
 
 	res, err := http.Get(url)
 	if err != nil {
@@ -28,6 +41,9 @@ func GetLocations(url string) (Location, error) {
 		fmt.Printf("error unmarshaling data: %v ", err)
 		return Location{}, err
 	}
+
+	cache.Add(url, data)
+
 	return locations, nil
 
 }

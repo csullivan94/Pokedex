@@ -4,12 +4,14 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+
+	"github.com/csullivan94/pokedex/internal/pokecache"
 )
 
 func main() {
 
 	cfg := &Config{}
-	NewCache()
+	cache := pokecache.NewCache(60)
 
 	scanner := bufio.NewScanner(os.Stdin)
 	var input string
@@ -22,7 +24,7 @@ func main() {
 		if !exists {
 			fmt.Println("unknown command")
 		} else {
-			command.callback(cfg)
+			command.callback(cfg, cache)
 		}
 
 	}

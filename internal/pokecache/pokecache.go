@@ -7,7 +7,7 @@ import (
 
 type Cache struct {
 	data map[string]cacheEntry
-	mu   *sync.Mutex
+	mu   *sync.RWMutex
 }
 
 type cacheEntry struct {
@@ -20,13 +20,12 @@ func NewCache(interval time.Duration) *Cache {
 		data: make(map[string]cacheEntry),
 	}
 	ticker := time.NewTicker(interval)
-	go cache.reapLoop(*ticker, interval)
+	cache.reapLoop(*ticker, interval)
 	return cache
 }
 
 func (c *Cache) Add(key string, v []byte) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
+
 	c.data[key] = cacheEntry{
 		createdAt: time.Now(),
 		val:       v,
@@ -35,8 +34,7 @@ func (c *Cache) Add(key string, v []byte) {
 }
 
 func (c *Cache) Get(key string) (v []byte, a bool) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
+
 	value, exists := c.data[key]
 	if !exists {
 		return nil, false
