@@ -11,7 +11,7 @@ import (
 func main() {
 
 	cfg := &Config{}
-	cache := pokecache.NewCache(60)
+	cache := pokecache.NewCache(5)
 
 	scanner := bufio.NewScanner(os.Stdin)
 	var input string
