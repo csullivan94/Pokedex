@@ -28,12 +28,7 @@ func main() {
 		} else {
 			command.callback(cfg, cache)
 		}
+		getPageNumber(cfg, cache)
 
-		for value := range cache.Data {
-			elapsed := time.Since(cache.Data[value].CreatedAt)
-			fmt.Printf("%v time elapsed: %v\n", value, elapsed)
-
-		}
 	}
-
 }

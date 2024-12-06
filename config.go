@@ -1,7 +1,9 @@
 package main
 
 type Config struct {
-	Previous string
-	Next     string
-	PageNum  int
+	Current   string
+	Previous  string
+	Next      string
+	PageNum   int
+	CacheUsed bool
 }

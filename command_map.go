@@ -12,11 +12,13 @@ func commandMap(cfg *Config, cache *pokecache.Cache) error {
 	start := time.Now()
 
 	if cfg.Next == "" {
-		cfg.Next = "https://pokeapi.co/api/v2/location"
+		cfg.Next = "https://pokeapi.co/api/v2/location?offset=0&limit=20"
 	}
 	cfg.PageNum += 1
 
-	locationstruct, err := pokeapi.GetLocations(cfg.Next, cache)
+	cfg.Current = cfg.Next
+
+	locationstruct, err := pokeapi.GetLocations(cfg.Current, cache)
 	if err != nil {
 		return err
 	}
@@ -53,8 +55,9 @@ func commandMapb(cfg *Config, cache *pokecache.Cache) error {
 	}
 
 	cfg.PageNum -= 1
+	cfg.Current = cfg.Previous
 
-	locationstruct, err := pokeapi.GetLocations(cfg.Previous, cache)
+	locationstruct, err := pokeapi.GetLocations(cfg.Current, cache)
 	if err != nil {
 		return err
 	}
