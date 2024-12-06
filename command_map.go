@@ -2,12 +2,15 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/csullivan94/pokedex/internal/pokeapi"
 	"github.com/csullivan94/pokedex/internal/pokecache"
 )
 
 func commandMap(cfg *Config, cache *pokecache.Cache) error {
+	start := time.Now()
+
 	if cfg.Next == "" {
 		cfg.Next = "https://pokeapi.co/api/v2/location"
 	}
@@ -30,10 +33,19 @@ func commandMap(cfg *Config, cache *pokecache.Cache) error {
 	}
 	cfg.Previous = locationstruct.Previous
 
+	if pokeapi.CacheUsed {
+		fmt.Println("Cache used: ", time.Since(start).Seconds())
+	} else {
+		fmt.Println("Cache not used: ", time.Since(start).Seconds())
+	}
+	pokeapi.CacheUsed = false
+
 	return nil
 }
 
 func commandMapb(cfg *Config, cache *pokecache.Cache) error {
+
+	start := time.Now()
 
 	if cfg.Previous == "" {
 		fmt.Println("No previous pages")
@@ -55,5 +67,11 @@ func commandMapb(cfg *Config, cache *pokecache.Cache) error {
 	cfg.Next = locationstruct.Next
 	cfg.Previous = locationstruct.Previous
 
+	if pokeapi.CacheUsed {
+		fmt.Println("Cache used: ", time.Since(start).Seconds())
+	} else {
+		fmt.Println("Cache not used: ", time.Since(start).Seconds())
+	}
+	pokeapi.CacheUsed = false
 	return nil
 }

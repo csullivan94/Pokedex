@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/csullivan94/pokedex/internal/pokecache"
 )
@@ -11,7 +12,8 @@ import (
 func main() {
 
 	cfg := &Config{}
-	cache := pokecache.NewCache(5)
+	interval := 10 * time.Second
+	cache := pokecache.NewCache(interval)
 
 	scanner := bufio.NewScanner(os.Stdin)
 	var input string
@@ -27,6 +29,11 @@ func main() {
 			command.callback(cfg, cache)
 		}
 
+		for value := range cache.Data {
+			elapsed := time.Since(cache.Data[value].CreatedAt)
+			fmt.Printf("%v time elapsed: %v\n", value, elapsed)
+
+		}
 	}
 
 }
