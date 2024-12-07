@@ -27,13 +27,13 @@ func commandMap(cfg *Config) error {
 		if err != nil {
 			return err
 		}
-		err = givePageNumber(cfg, cfg.Cache, pageNum)
+		err = page_number.GivePageNumber(cfg, pageNum)
 		if err != nil {
 			return err
 		}
 
 	}
-	getPageNumber(cfg, cfg.Cache)
+	getPageNumber(cfg)
 
 	fmt.Println(cfg.Current)
 
@@ -74,7 +74,7 @@ func commandMapb(cfg *Config) error {
 	}
 
 	cfg.Current = cfg.Previous
-	getPageNumber(cfg, cfg.Cache)
+	getPageNumber(cfg)
 
 	locationstruct, err := pokeapi.GetLocations(cfg.Current, cfg.Cache)
 	if err != nil {

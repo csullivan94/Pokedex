@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
-
-	"github.com/csullivan94/pokedex/internal/pokecache"
 )
 
-func getPageNumber(cfg *Config, c *pokecache.Cache) error {
+func GetPageNumber(cfg *Config) error {
 	url := cfg.Current
 	re := regexp.MustCompile(`\d+`)
 	offsetString := string(re.Find([]byte(url[35:])))
@@ -23,7 +21,7 @@ func getPageNumber(cfg *Config, c *pokecache.Cache) error {
 	return nil
 }
 
-func givePageNumber(cfg *Config, c *pokecache.Cache, page int) error {
+func GivePageNumber(cfg *Config, page int) error {
 	if page > 52 {
 		fmt.Println("Outside of page range, last page 51")
 		return fmt.Errorf("outside of page range")

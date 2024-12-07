@@ -38,7 +38,7 @@ func GetLocationPokemon(url string, cache *pokecache.Cache) (Location_area, erro
 	defer res.Body.Close()
 
 	var locationArea Location_area
-	err = json.Unmarshal(data, &locations)
+	err = json.Unmarshal(data, &locationArea)
 	if err != nil {
 		fmt.Printf("error unmarshaling data: %v ", err)
 		return Location_area{}, err
