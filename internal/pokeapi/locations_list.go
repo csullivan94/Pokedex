@@ -29,6 +29,7 @@ func GetLocations(url string, cache *pokecache.Cache) (Location, error) {
 	res, err := http.Get(url)
 	if err != nil {
 		fmt.Println("error with get request: ", err)
+		fmt.Println(url)
 		return Location{}, err
 	}
 

@@ -2,23 +2,42 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/csullivan94/pokedex/internal/pokeapi"
-	"github.com/csullivan94/pokedex/internal/pokecache"
 )
 
-func commandMap(cfg *Config, cache *pokecache.Cache) error {
+func commandMap(cfg *Config) error {
 	start := time.Now()
 
-	if cfg.Next == "" {
-		cfg.Next = "https://pokeapi.co/api/v2/location?offset=0&limit=20"
+	if cfg.Current == "" {
+		cfg.Current = "https://pokeapi.co/api/v2/location?offset=0&limit=20"
+	} else {
+		if cfg.Next != "" {
+			cfg.Current = cfg.Next
+		} else {
+			cfg.Current = "https://pokeapi.co/api/v2/location?offset=0&limit=20"
+		}
+
 	}
-	cfg.PageNum += 1
 
-	cfg.Current = cfg.Next
+	if cfg.Argument != "" {
+		pageNum, err := strconv.Atoi(cfg.Argument)
+		if err != nil {
+			return err
+		}
+		err = givePageNumber(cfg, cfg.Cache, pageNum)
+		if err != nil {
+			return err
+		}
 
-	locationstruct, err := pokeapi.GetLocations(cfg.Current, cache)
+	}
+	getPageNumber(cfg, cfg.Cache)
+
+	fmt.Println(cfg.Current)
+
+	locationstruct, err := pokeapi.GetLocations(cfg.Current, cfg.Cache)
 	if err != nil {
 		return err
 	}
@@ -41,11 +60,11 @@ func commandMap(cfg *Config, cache *pokecache.Cache) error {
 		fmt.Println("Cache not used: ", time.Since(start).Seconds())
 	}
 	pokeapi.CacheUsed = false
-
+	cfg.Argument = ""
 	return nil
 }
 
-func commandMapb(cfg *Config, cache *pokecache.Cache) error {
+func commandMapb(cfg *Config) error {
 
 	start := time.Now()
 
@@ -54,10 +73,10 @@ func commandMapb(cfg *Config, cache *pokecache.Cache) error {
 		return fmt.Errorf("no previous pages")
 	}
 
-	cfg.PageNum -= 1
 	cfg.Current = cfg.Previous
+	getPageNumber(cfg, cfg.Cache)
 
-	locationstruct, err := pokeapi.GetLocations(cfg.Current, cache)
+	locationstruct, err := pokeapi.GetLocations(cfg.Current, cfg.Cache)
 	if err != nil {
 		return err
 	}

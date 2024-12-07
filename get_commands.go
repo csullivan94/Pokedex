@@ -1,11 +1,9 @@
 package main
 
-import "github.com/csullivan94/pokedex/internal/pokecache"
-
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*Config, *pokecache.Cache) error
+	callback    func(*Config) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -29,6 +27,11 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "Short for 'map back'\nLists the previous 20 locations",
 			callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Explore the pokemon in the specified area",
+			callback:    commandExplore,
 		},
 	}
 
