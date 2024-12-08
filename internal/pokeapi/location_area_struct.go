@@ -1,9 +1,6 @@
 package pokeapi
 
-type Location_area struct {
-	ID                   int    `json:"id"`
-	Name                 string `json:"name"`
-	GameIndex            int    `json:"game_index"`
+type LocationArea struct {
 	EncounterMethodRates []struct {
 		EncounterMethod struct {
 			Name string `json:"name"`
@@ -17,16 +14,19 @@ type Location_area struct {
 			} `json:"version"`
 		} `json:"version_details"`
 	} `json:"encounter_method_rates"`
-	Location struct {
+	GameIndex int `json:"game_index"`
+	ID        int `json:"id"`
+	Location  struct {
 		Name string `json:"name"`
 		URL  string `json:"url"`
 	} `json:"location"`
+	Name  string `json:"name"`
 	Names []struct {
-		Name     string `json:"name"`
 		Language struct {
 			Name string `json:"name"`
 			URL  string `json:"url"`
 		} `json:"language"`
+		Name string `json:"name"`
 	} `json:"names"`
 	PokemonEncounters []struct {
 		Pokemon struct {
@@ -34,21 +34,21 @@ type Location_area struct {
 			URL  string `json:"url"`
 		} `json:"pokemon"`
 		VersionDetails []struct {
-			Version struct {
-				Name string `json:"name"`
-				URL  string `json:"url"`
-			} `json:"version"`
-			MaxChance        int `json:"max_chance"`
 			EncounterDetails []struct {
-				MinLevel        int   `json:"min_level"`
-				MaxLevel        int   `json:"max_level"`
-				ConditionValues []any `json:"condition_values"`
 				Chance          int   `json:"chance"`
+				ConditionValues []any `json:"condition_values"`
+				MaxLevel        int   `json:"max_level"`
 				Method          struct {
 					Name string `json:"name"`
 					URL  string `json:"url"`
 				} `json:"method"`
+				MinLevel int `json:"min_level"`
 			} `json:"encounter_details"`
+			MaxChance int `json:"max_chance"`
+			Version   struct {
+				Name string `json:"name"`
+				URL  string `json:"url"`
+			} `json:"version"`
 		} `json:"version_details"`
 	} `json:"pokemon_encounters"`
 }

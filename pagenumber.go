@@ -9,7 +9,7 @@ import (
 func GetPageNumber(cfg *Config) error {
 	url := cfg.Current
 	re := regexp.MustCompile(`\d+`)
-	offsetString := string(re.Find([]byte(url[35:])))
+	offsetString := string(re.Find([]byte(url[40:])))
 	offset, err := strconv.Atoi(offsetString)
 	if err != nil {
 		return err
@@ -22,8 +22,8 @@ func GetPageNumber(cfg *Config) error {
 }
 
 func GivePageNumber(cfg *Config, page int) error {
-	if page > 52 {
-		fmt.Println("Outside of page range, last page 51")
+	if page > 53 {
+		fmt.Println("Outside of page range, last page 52")
 		return fmt.Errorf("outside of page range")
 	}
 

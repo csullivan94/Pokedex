@@ -12,12 +12,12 @@ func commandMap(cfg *Config) error {
 	start := time.Now()
 
 	if cfg.Current == "" {
-		cfg.Current = "https://pokeapi.co/api/v2/location?offset=0&limit=20"
+		cfg.Current = "https://pokeapi.co/api/v2/location-area?offset=0&limit=20"
 	} else {
 		if cfg.Next != "" {
 			cfg.Current = cfg.Next
 		} else {
-			cfg.Current = "https://pokeapi.co/api/v2/location?offset=0&limit=20"
+			cfg.Current = "https://pokeapi.co/api/v2/location-area?offset=0&limit=20"
 		}
 
 	}
@@ -27,13 +27,13 @@ func commandMap(cfg *Config) error {
 		if err != nil {
 			return err
 		}
-		err = page_number.GivePageNumber(cfg, pageNum)
+		err = GivePageNumber(cfg, pageNum)
 		if err != nil {
 			return err
 		}
 
 	}
-	getPageNumber(cfg)
+	GetPageNumber(cfg)
 
 	fmt.Println(cfg.Current)
 
@@ -74,7 +74,7 @@ func commandMapb(cfg *Config) error {
 	}
 
 	cfg.Current = cfg.Previous
-	getPageNumber(cfg)
+	GetPageNumber(cfg)
 
 	locationstruct, err := pokeapi.GetLocations(cfg.Current, cfg.Cache)
 	if err != nil {

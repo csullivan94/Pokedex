@@ -34,6 +34,7 @@ func main() {
 		} else {
 			command.callback(cfg)
 		}
+		cfg.Argument = ""
 
 	}
 
