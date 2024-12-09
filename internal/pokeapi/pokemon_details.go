@@ -16,7 +16,7 @@ func GetPokemonDetails(url string, cache *pokecache.Cache) (Pokemon, error) {
 		var pokemonDetails Pokemon
 		err := json.Unmarshal(value, &pokemonDetails)
 		if err != nil {
-			fmt.Printf("No pokemon of that name here!")
+			fmt.Println("No pokemon of that name here!")
 			return Pokemon{}, err
 		}
 
@@ -40,7 +40,7 @@ func GetPokemonDetails(url string, cache *pokecache.Cache) (Pokemon, error) {
 	var pokemonDetails Pokemon
 	err = json.Unmarshal(data, &pokemonDetails)
 	if err != nil {
-		fmt.Printf("No pokemon of that name here!")
+		fmt.Println("No pokemon of that name here!")
 		return Pokemon{}, err
 	}
 
