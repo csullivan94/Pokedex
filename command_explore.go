@@ -26,6 +26,8 @@ func commandExplore(cfg *Config) error {
 	for item := range locationAreaStruct.PokemonEncounters {
 		fmt.Println(locationAreaStruct.PokemonEncounters[item].Pokemon.Name)
 
+		cfg.CurrentExplore = url
+
 	}
 	if pokeapi.CacheUsed {
 		fmt.Println("Cache used: ", time.Since(start).Seconds())

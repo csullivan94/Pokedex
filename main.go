@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/csullivan94/pokedex/internal/pokeapi"
 	"github.com/csullivan94/pokedex/internal/pokecache"
 )
 
@@ -15,6 +16,7 @@ func main() {
 	cfg := &Config{}
 	interval := 10 * time.Second
 	cfg.Cache = pokecache.NewCache(interval)
+	cfg.Pokedex = make(map[string]pokeapi.Pokemon)
 
 	scanner := bufio.NewScanner(os.Stdin)
 	var input string

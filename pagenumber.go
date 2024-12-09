@@ -7,7 +7,7 @@ import (
 )
 
 func GetPageNumber(cfg *Config) error {
-	url := cfg.Current
+	url := cfg.CurrentMap
 	re := regexp.MustCompile(`\d+`)
 	offsetString := string(re.Find([]byte(url[40:])))
 	offset, err := strconv.Atoi(offsetString)
@@ -27,12 +27,12 @@ func GivePageNumber(cfg *Config, page int) error {
 		return fmt.Errorf("outside of page range")
 	}
 
-	url := cfg.Current
+	url := cfg.CurrentMap
 	newOffsetInt := (page - 1) * 20
 	newOffset := strconv.Itoa(newOffsetInt) + "&"
 
 	re := regexp.MustCompile(`\d+&`)
 	offsetString := string(re.ReplaceAll([]byte(url), []byte(newOffset)))
-	cfg.Current = offsetString
+	cfg.CurrentMap = offsetString
 	return nil
 }

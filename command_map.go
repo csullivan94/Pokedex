@@ -11,13 +11,13 @@ import (
 func commandMap(cfg *Config) error {
 	start := time.Now()
 
-	if cfg.Current == "" {
-		cfg.Current = "https://pokeapi.co/api/v2/location-area?offset=0&limit=20"
+	if cfg.CurrentMap == "" {
+		cfg.CurrentMap = "https://pokeapi.co/api/v2/location-area?offset=0&limit=20"
 	} else {
-		if cfg.Next != "" {
-			cfg.Current = cfg.Next
+		if cfg.NextMap != "" {
+			cfg.CurrentMap = cfg.NextMap
 		} else {
-			cfg.Current = "https://pokeapi.co/api/v2/location-area?offset=0&limit=20"
+			cfg.CurrentMap = "https://pokeapi.co/api/v2/location-area?offset=0&limit=20"
 		}
 
 	}
@@ -35,9 +35,9 @@ func commandMap(cfg *Config) error {
 	}
 	GetPageNumber(cfg)
 
-	fmt.Println(cfg.Current)
+	fmt.Println(cfg.CurrentMap)
 
-	locationstruct, err := pokeapi.GetLocations(cfg.Current, cfg.Cache)
+	locationstruct, err := pokeapi.GetLocations(cfg.CurrentMap, cfg.Cache)
 	if err != nil {
 		return err
 	}
@@ -47,12 +47,12 @@ func commandMap(cfg *Config) error {
 
 	}
 	fmt.Printf("---------------Page %d---------------\n", cfg.PageNum)
-	cfg.Next = locationstruct.Next
-	if cfg.Next == "" {
+	cfg.NextMap = locationstruct.Next
+	if cfg.NextMap == "" {
 		fmt.Println("End of locations")
 		cfg.PageNum = 0
 	}
-	cfg.Previous = locationstruct.Previous
+	cfg.PreviousMap = locationstruct.Previous
 
 	if pokeapi.CacheUsed {
 		fmt.Println("Cache used: ", time.Since(start).Seconds())
@@ -60,7 +60,7 @@ func commandMap(cfg *Config) error {
 		fmt.Println("Cache not used: ", time.Since(start).Seconds())
 	}
 	pokeapi.CacheUsed = false
-	cfg.Argument = ""
+
 	return nil
 }
 
@@ -68,15 +68,15 @@ func commandMapb(cfg *Config) error {
 
 	start := time.Now()
 
-	if cfg.Previous == "" {
+	if cfg.PreviousMap == "" {
 		fmt.Println("No previous pages")
 		return fmt.Errorf("no previous pages")
 	}
 
-	cfg.Current = cfg.Previous
+	cfg.CurrentMap = cfg.PreviousMap
 	GetPageNumber(cfg)
 
-	locationstruct, err := pokeapi.GetLocations(cfg.Current, cfg.Cache)
+	locationstruct, err := pokeapi.GetLocations(cfg.CurrentMap, cfg.Cache)
 	if err != nil {
 		return err
 	}
@@ -86,8 +86,8 @@ func commandMapb(cfg *Config) error {
 
 	}
 	fmt.Printf("---------------Page %d---------------\n", cfg.PageNum)
-	cfg.Next = locationstruct.Next
-	cfg.Previous = locationstruct.Previous
+	cfg.NextMap = locationstruct.Next
+	cfg.PreviousMap = locationstruct.Previous
 
 	if pokeapi.CacheUsed {
 		fmt.Println("Cache used: ", time.Since(start).Seconds())
