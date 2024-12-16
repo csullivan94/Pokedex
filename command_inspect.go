@@ -4,6 +4,7 @@ import "fmt"
 
 func commandInspect(cfg *Config) error {
 	if cfg.Argument == "" {
+		fmt.Println("Your Pokedex:")
 		for pokemon := range cfg.Pokedex {
 			fmt.Println(cfg.Pokedex[pokemon].Name)
 		}
