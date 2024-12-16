@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand/v2"
 
 	"github.com/csullivan94/pokedex/internal/pokeapi"
 )
@@ -19,13 +20,25 @@ func commandCatch(cfg *Config) error {
 		return err
 	}
 
-	fmt.Printf("You caught %s!\n", cfg.Argument)
-	fmt.Printf("Adding %s to pokedex...\n", cfg.Argument)
-	fmt.Println("Name: ", pokemonStruct.Name)
-	fmt.Println("Height: ", pokemonStruct.Height)
-	fmt.Println("Weight: ", pokemonStruct.Weight)
+	fmt.Printf("Throwing a Pokeball at %s...", cfg.Argument)
 
-	cfg.Pokedex[cfg.Argument] = pokemonStruct
+	if !randCatch(pokemonStruct) {
+		fmt.Printf("%s escaped!\n", pokemonStruct.Name)
+	} else {
+
+		fmt.Printf("You caught %s!\n", cfg.Argument)
+
+		cfg.Pokedex[cfg.Argument] = pokemonStruct
+	}
 
 	return nil
+}
+
+func randCatch(pokemonStruct pokeapi.Pokemon) bool {
+	baseExperience := pokemonStruct.BaseExperience / 2
+	if baseExperience > 250 {
+		baseExperience = 250
+	}
+	chance := (308.0 - float32(baseExperience)) / 308.0
+	return rand.Float32() < chance
 }
